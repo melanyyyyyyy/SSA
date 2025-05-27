@@ -1,0 +1,18 @@
+#ver-mas-btn {
+    background-color: var(--university-blue-color);
+    border-color: var(--university-blue-color);
+    margin-top: 10px;
+}
+
+.icon {
+    height: 20px !important;
+}
+
+.ver-mas-btn-container {
+    display: flex;
+    justify-content: center;
+}
+
+.last-table {
+    margin-bottom: 30px;
+}

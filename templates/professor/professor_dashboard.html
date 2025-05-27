@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head_scripts %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/professor/professor_dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="page-container">
+
+        {% if subjects %}
+            <div class="page-header">
+                <div class="header-text">
+                    <h2 class="title">Asignaturas que usted imparte</h2>
+                    <hr class="custom-hr">
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Año</th>
+                            <th>Carrera</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for subject in subjects %}
+                            <tr data-href="{% url 'subject_view' subject.id %}">
+                                <td>{{ subject.name }}</td>
+                                <td>{{ subject.year }}</td>
+                                <td>{{ subject.career.name }}</td>
+                                <td class="grid-action">
+                                    <button class="action-btn" data-student-id="{{ data.student.id }}">
+                                        Ver detalles
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <h2>No hay asignaturas asignadas.</h2>
+        {% endif %}
+
+        <section class="comments-section">
+            <div class="page-header">
+                <div class="header-text">
+                    <h2 class="title">Comentarios</h2>
+                    <hr class="custom-hr">
+                </div>
+            </div>
+
+            <div class="comments-container" id="comments-container">
+                {% if comments %}
+                    {% for comment in comments %}
+                        <div class="comment blue-hover fadeOpen">
+                            <div class="comment-header">
+                                <h4>{{ comment.student.user.get_full_name }}</h4>
+                                <h4>{{ comment.subject.name }}</h4>
+                                <span>
+                                    {{ comment.date|date:"d/m/Y H:i" }}
+                                </span>
+                                <div class="comment-buttons">
+                                    <form method="GET" action="{% url 'edit_comment' comment.id %}" style="display:inline;" id="comment-edit-form">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-blue btn-comment-action comment-edit">
+                                            <img src="{% static 'images/icons/edit.svg' %}" class="image-comment">
+                                        </button>
+                                    </form>
+                                    <form method="POST" action="{% url 'delete_comment' comment.id %}" style="display:inline;" class="comment-delete-form">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="csrfmiddlewaretokendeletecomment" value="{{ csrf_token }}">
+                                        <button type="button" class="btn btn-blue btn-comment-action comment-delete comment-delete-button">
+                                            <img src="{% static 'images/icons/delete-icon.svg' %}" class="image-comment">
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <p>{{ comment.comment }}</p>
+                        </div>
+                    {% endfor %}
+                    <div class="ver-mas-btn-container">
+                        <button id="ver-mas-btn" class="btn btn blue-hover btn-icon" style="display:none">Ver más
+                            <img src="{% static 'images/icons/angle-down.svg' %}" class="icon">
+                        </button>
+                    </div>
+                {% else %}
+                    <h3 class="title element-not-found">
+                        No hay comentarios disponibles.
+                    </h3>
+                {% endif %}
+            </div>
+        </section>
+
+    </div>
+
+    <section class="modal modal-delete">
+        <div class="modal-container">
+            <h2 class="modal-title">¿Estás seguro de que deseas eliminar el elemento seleccionado?</h2>
+            <div class="modal-options">
+                <button class="btn modal-accept green-hover">Aceptar</button>
+                <button class="btn modal-cancel red-hover">Cancelar</button>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'js/professor/professor_dashboard.js' %}"></script>
+{% endblock %}

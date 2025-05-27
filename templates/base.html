@@ -1,0 +1,92 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Seguimiento Académico</title>
+    <link rel="shortcut icon" href="{% static 'images/icons/university.svg' %}" type="image/x-icon">
+
+    <link rel="stylesheet" href="{% static 'css/global.css' %}?v=2.0">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}?v=1.0">
+
+    {% block head_scripts %}
+    {% endblock %}
+</head>
+<body>
+    <nav class="shadow nav-bar">
+        {% block nav %}
+        <img src="{% static 'images/logos/UHO Short White.svg' %}"
+             class="logo"
+             alt="Logo UHo"/>
+        
+        {% if user.is_authenticated %}
+
+        <div class="user-info">
+            <p class="user-name">{{ user.first_name }} {{ user.last_name }}</p>
+
+            {% if user.is_professor %}
+
+            <span class="user-rol">Profesor</span>
+
+            {% elif user.is_student %}
+
+            <span class="user-rol">Estudiante</span>
+
+            {% endif %}
+
+        </div>
+
+        <div class="user-icon-container fadeOpen">
+            <img src="{% static 'images/icons/user-icon.svg' %}" alt="Ícono de usuario" class="user-icon">
+        </div>
+
+        <div class="logout-button btn">
+            <button onclick="openModal()"></button>
+        </div>
+
+        {% endif %}
+
+        {% endblock %}
+    </nav>
+
+    <main>
+        <div id="messages"></div>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <section class="modal" id="logout-modal">
+        <div class="modal-container">
+            <h2 class="modal-title">¿Estás seguro de que deseas cerrar sesión?</h2>
+            <div class="modal-options">
+                <button class="btn modal-accept green-hover" onclick="logout('{% url 'logout' %}')">Aceptar</button>
+                <button class="btn modal-cancel red-hover" onclick="closeModal()">Cancelar</button>
+            </div>
+        </div>
+    </section>    
+
+    <footer>
+        {% block footer %}
+        <p>Sistema de Seguimiento Académico</p>
+        <p>AGA 2025</p>
+        {% endblock %}
+    </footer>
+
+    <script src="{% static 'js/base.js' %}"></script>
+    
+    {% block scripts %}
+        <script>
+            window.data = {
+                messages: [
+                    {% for message in messages %}
+                        {text: "{{ message|escapejs }}", tag: "{{ message.tags }}"}{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                ]
+            };
+        </script>
+    {% endblock %}
+
+</body>
+</html>

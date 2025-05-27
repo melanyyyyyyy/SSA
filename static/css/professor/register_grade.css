@@ -1,0 +1,72 @@
+.input-container {
+        margin-bottom: 20px;
+        display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px
+}
+
+.title_label {
+    font-weight: 900;
+    color: var(--university-green-color);
+    font-size: 1.3em;
+}
+
+
+.name-input {
+    padding: 12px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease-in-out;
+    animation: fadeOpen 0.3s ease-in-out;
+    box-sizing: border-box;
+         height: 50px;
+     width: 200px;
+}
+
+.name-input:hover {
+    border-color: var(--university-green-color);
+    background-color: #f1f1f1;
+}
+
+.name-input:focus {
+    border-color: var(--university-green-color);
+    box-shadow: 0px 0px 8px rgba(59, 49, 125, 0.5);
+    background-color: #fff;
+}
+
+.button-group {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 20px;
+}
+
+#submit-button {
+    background-color: var(--university-green-color);
+}
+
+#cancel-button {
+    background-color: var(--red-color);
+}
+
+input[type="text"]::placeholder {
+    font-size: 14px; 
+    color: #999;   
+    font-weight: normal;
+    opacity: 1; 
+}
+
+@media (max-width: 768px) {
+    
+    .input-container {
+        flex-direction: column;
+    gap: 20px;
+        justify-content: center;
+    align-items: center;
+}
+
+}

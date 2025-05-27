@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head_scripts %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/student/student_dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="header-text">
+        <h2 class="title">Registros académicos</h2>
+        <hr class="custom-hr">
+    </div>
+
+    <div class="table-container">
+        <table class="table last-table">
+            <thead>
+                <tr>
+                    <th>Nombre de la asignatura</th>
+                    <th>Año académico</th>
+                    <th>Promedio de asistencia</th>
+                    <th>Promedio de calificaciones</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in subject_data %}
+                    <tr>
+                        <td>{{ data.subject.name }}</td>
+                        <td>{{ data.subject.year }}</td>
+                        <td>
+                            {% if data.has_attendance %}
+                                {{ data.attendance }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if data.has_grades %}
+                                {{ data.grade_avg|default:'N/A'|floatformat:1 }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </td>
+                        <td class="grid-action">
+                            <button class="action-btn view-details-btn"
+                                    data-href="{% url 'subject_register_detail' data.subject.id %}">
+                                Ver detalles
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="header-text">
+        <h2 class="title">Comentarios</h2>
+        <hr class="custom-hr">
+    </div>
+
+    {% if comments %}
+        <div class="comments-container">
+            {% for comment in comments %}
+                <div class="comment blue-hover fadeOpen">
+                    <div class="comment-header">
+                        <h4>{{ comment.professor.user.get_full_name }}</h4>
+                        <h4>{{ comment.subject.name }}</h4>
+                        <span>{{ comment.date|date:"d/m/Y H:i" }}</span>
+                    </div>
+                    <p>{{ comment.comment }}</p>
+                </div>
+            {% endfor %}
+            <div class="ver-mas-btn-container">
+                <button id="ver-mas-btn" class="btn btn blue-hover btn-icon" style="display:none">
+                    Ver más
+                    <img src="{% static 'images/icons/angle-down.svg' %}" class="icon">
+                </button>
+            </div>
+        </div>
+    {% else %}
+        <h3 class="title element-not-found">
+            No hay comentarios disponibles para este estudiante en las asignaturas que usted imparte.
+        </h3>
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/student/student_dashboard.js' %}"></script>
+{% endblock %}

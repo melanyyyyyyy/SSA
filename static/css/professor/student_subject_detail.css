@@ -1,0 +1,34 @@
+.table-title {
+    font-size: 1.3em;
+    color: var(--university-green-color);
+    font-weight: 900;
+    margin: 30px 0 12px 10px;
+}
+
+#edit-attendance-btn, #edit-grade-btn {
+    background-color: var(--university-green-color);
+}
+
+#save-attendance-btn, #save-grade-btn  {
+    background-color: var(--university-green-color);
+}
+
+#cancel-attendance-btn, #cancel-grade-btn {
+    background-color: var(--red-color);
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.table tbody tr:hover td {
+    cursor: default;
+}
+
+.table.editing tbody tr:hover td {
+    cursor: pointer !important;
+}
+

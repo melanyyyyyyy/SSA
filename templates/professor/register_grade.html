@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head_scripts %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/professor/register_grade.css' %}"> 
+{% endblock %}
+
+{% block content %}
+    <div class="page-container">
+
+            <div class="page-header">
+                <div class="header-text">
+                    <h2 class="title">Añadir registro de evaluación para estudiantes de la asignatura {{ subject.name }} </h2>
+                    <hr class="custom-hr">
+                </div>
+            </div>
+
+            <form method="post" action="{% url 'register_grade' subject.id %}" id="form-action">
+            {% csrf_token %}
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+            <div class="input-container">
+            <div>
+                <label for="grade_name" class="title_label">Nombre de la evaluación:</label>
+                <input type="text" id="grade_name" name="grade_name" class="name-input" placeholder="Escriba el nombre aquí...">
+            </div>
+
+            <div class="date-picker">
+                <label for="session_date" class="title_label">Fecha de la evaluación:</label>
+                <input type="date" id="session_date" name="session_date">
+            </div>
+        </div>
+
+        </div>
+
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nombre del estudiante</th>
+                            <th class="no-border">Nota</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students %}
+                            <tr>
+                                <td>{{ student.user.get_full_name }} </td>
+                                <td class="no-border">
+                                    <label class="checkbox-container">
+                                        <input type="number"
+                                               name="grade_{{ student.id }}"
+                                               min="2" max="5" step="0.01"
+                                               placeholder="2.00 - 5.00"
+                                               value=""
+                                               class="transparent-input"
+                                               >
+                                    </label>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="btn btn-icon" id="submit-button">
+                    Guardar
+                    <img src="{% static 'images/icons/save.svg' %}" class="icon">
+                </button>
+                <button type="button" class="btn btn-icon" id="cancel-button">
+                    Cancelar
+                    <img src="{% static 'images/icons/cancel.svg' %}" class="icon">
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <section class="modal" id="cancel-modal">
+        <div class="modal-container">
+            <h2 class="modal-title">¿Seguro que quieres cancelar? Se perderán los datos de tu registro.</h2>
+            <div class="modal-options">
+                <button class="btn modal-accept green-hover" id="accept-cancel-btn" data-href="{% url 'subject_view' subject.id %}">Aceptar</button>
+                <button class="btn modal-cancel blue-hover" onclick="closeCancelModal()">Cancelar</button>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'js/professor/register_grade.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,64 @@
+main {
+    display: flex;
+    justify-content: center;
+}
+
+.grid-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 100%;
+    min-height: 40px; 
+}
+
+
+.btn-comment-action {
+    height: 100%;
+    padding: 5px 10px;
+}
+
+.btn-comment-action img {
+    height: 20px;
+}
+
+.comment-edit {
+    background-color: var(--university-green-color);
+}
+
+.comment-delete {
+    background-color: var(--red-color);
+}
+
+.image-comment {
+    transform: translate(0.5px, 0.7px);
+}
+
+#ver-mas-btn {
+    background-color: var(--university-blue-color);
+    border-color: var(--university-blue-color);
+    margin-top: 10px;
+}
+
+.ver-mas-btn-container {
+    display: flex;
+    justify-content: center;
+}
+
+.comments-section {
+    margin-top: 30px;
+}
+
+.icon {
+    height: 20px !important;
+}
+
+@media (max-width: 768px) {
+    .button-group {
+        justify-content: space-evenly;
+    }
+
+    .comments-section {
+        margin-top: 20px;
+    }
+}

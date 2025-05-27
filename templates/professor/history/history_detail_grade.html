@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head_scripts %}
+    <link rel="stylesheet" href="{% static 'css/professor/history/history_detail_grade.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <div class="return-btn-container">
+            <button id="return-btn" class="btn" onclick="window.location.href='{% url 'history' subject.id %}'"></button>
+        </div>
+        <div class="header-text">
+            <h2 class="title">Detalle de evaluación - {{ subject.name }} ({{ name }}, {{ date }})</h2>
+            <hr class="custom-hr">
+        </div>
+    </div>
+    <div class="table-container">
+        <form id="edit-grade-form" action="{% url 'history_detail_grade' subject.id date name %}" method="post">
+            {% csrf_token %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre del estudiante</th>
+                        <th>Nota</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                    <tr>
+                        <td>{{ record.student.user.get_full_name }}</td>
+                        <td>
+                            <input type="number" name="grade_{{ record.id }}" value="{{ record.grade }}" class="transparent-input" disabled>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="2">No hay registros.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="form-actions button-group">
+                <button type="button" id="edit-btn" class="btn btn-icon">Editar
+                    <img src="{% static 'images/icons/edit.svg' %}" class="icon">
+                </button>
+                <button type="submit" id="save-btn" class="btn btn-icon" style="display:none;">Guardar cambios
+                    <img src="{% static 'images/icons/save.svg' %}" class="icon">
+                </button>
+                <button type="button" id="cancel-btn" class="btn btn-icon" style="display:none;">Cancelar
+                    <img src="{% static 'images/icons/cancel.svg' %}" class="icon">
+                </button>
+            </div>
+        </form>
+    </div>
+    <div id="messages"></div>
+</div>
+
+    <section class="modal" id="cancel-modal">
+        <div class="modal-container">
+            <h2 class="modal-title">¿Estás seguro de que deseas cancelar? Se descartarán los cambios realizados.</h2>
+            <div class="modal-options">
+                <button class="btn modal-accept green-hover">Aceptar</button>
+                <button class="btn modal-cancel red-hover">Cancelar</button>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'js/professor/history/history_detail_grade.js' %}"></script>
+{% endblock %}

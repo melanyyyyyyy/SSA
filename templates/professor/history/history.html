@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head_scripts %}
+    <link rel="stylesheet" href="{% static 'css/professor/history/history.css' %}">
+{% endblock %}
+
+{% block content %}
+    {% csrf_token %}
+    <div class="page-container">
+        <div class="page-header"></div>
+
+        <div class="page-header">
+            <div class="return-btn-container">
+                <button id="return-btn" class="btn" onclick="window.location.href='{% url 'subject_view' subject.id %}'"></button>
+            </div>
+            <div class="header-text">
+                <h2 class="title">Historial de la asignatura: {{ subject.name }}</h2>
+                <hr class="custom-hr">
+            </div>
+        </div>
+
+        <h3 class="table-title">Registros de Evaluaciones</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Nombre de la evaluación</th>
+                    <th>Promedio de evaluación</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in grade_history %}
+                    <tr class="grade-row"
+                        data-href="{% url 'history_detail_grade' subject.id record.date|date:'Y-m-d' record.name %}">
+                        <td>{{ record.date }}</td>
+                        <td>{{ record.name }}</td>
+                        <td>
+                            {% if record.avg_grade is not None %}
+                                {{ record.avg_grade|floatformat:2 }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </td>
+                        <td class="grid-action">
+                            <button class="action-btn" data-student-id="{{ data.student.id }}">
+                                Ver detalles
+                            </button>
+                            <button class="action-btn grade-delete-btn delete-button"
+                                    data-date="{{ record.date|date:'Y-m-d' }}"
+                                    data-name="{{ record.name }}"
+                                    data-subject="{{ subject.id }}">
+                                Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="4">No hay registros de evaluaciones.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3 class="table-title">Registros de Asistencia</h3>
+        <table class="table last-table">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Promedio de asistencia (%)</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in attendance_history %}
+                    <tr class="attendance-row"
+                        data-href="{% url 'history_detail_attendance' subject.id record.date|date:'Y-m-d' %}">
+                        <td>{{ record.date }}</td>
+                        <td>
+                            {% if record.avg_attendance is not None %}
+                                {{ record.avg_attendance }}%
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </td>
+                        <td class="grid-action">
+                            <button class="action-btn" data-student-id="{{ data.student.id }}">
+                                Ver detalles
+                            </button>
+                            <button class="action-btn attendance-delete-btn delete-button"
+                                    data-date="{{ record.date|date:'Y-m-d' }}"
+                                    data-subject="{{ subject.id }}">
+                                Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="3">No hay registros de asistencia.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <section class="modal modal-delete">
+        <div class="modal-container">
+            <h2 class="modal-title">¿Estás seguro de que deseas eliminar el registro seleccionado?</h2>
+            <div class="modal-options">
+                <button class="btn modal-accept green-hover">Aceptar</button>
+                <button class="btn modal-cancel red-hover">Cancelar</button>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'js/professor/history/history.js' %}"></script>
+{% endblock %}

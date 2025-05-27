@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head_scripts %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/professor/subject_view.css' %}"> 
+{% endblock %}
+
+{% block content %}
+    <div class="page-container">
+
+        {% if not student_data %}
+            <h2 class="title-black">No hay estudiantes asignados a esa asignatura.</h2>
+        {% else %}
+
+            <div class="page-header">
+                <div class="return-btn-container">
+                    <button id="return-btn" class="btn" onclick="window.location.href='{% url 'professor_dashboard' %}'"></button>
+                </div>
+                <div class="header-text">
+                    <h2 class="title">Estudiantes de la asignatura {{ subject.name }}</h2>
+                    <hr class="custom-hr">
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Promedio de asistencia</th>
+                            <th>Promedio de calificaciones</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in student_data %}
+                            <tr>
+                                <td>{{ data.student.user.get_full_name }}</td>
+                                <td>
+                                    {% if data.has_attendance %}
+                                        {{ data.attendance }}
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if data.has_grades %}
+                                        {{ data.grade_avg|default:'N/A'|floatformat:1 }}
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </td>
+                                <td class="grid-action">
+                                    <button class="action-btn view-details-btn"
+                                            data-href="{% url 'student_subject_detail' subject.id data.student.id %}">
+                                        Ver detalles
+                                    </button>
+                                    <button class="action-btn"
+                                            onclick="window.location.href='{% url 'comment_add' data.student.user.username subject.id %}'">
+                                        Comentar
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="btn btn-icon" id="attendance_button"
+                        data-href="{% url 'register_attendance' subject.id %}">Añadir asistencia
+                    <img src="{% static 'images/icons/attendance.svg' %}" class="icon">
+                    </button>
+                <button type="button" class="btn btn-icon" id="grade_button"
+                        data-href="{% url 'register_grade' subject.id %}">Añadir evaluación
+                        <img src="{% static 'images/icons/grade.svg' %}" class="icon">
+                    </button>
+                <button type="button" class="btn btn-icon" id="history_button"
+                        data-href="{% url 'history' subject.id %}">Ver historial
+                        <img src="{% static 'images/icons/history.svg' %}" class="icon">
+                    </button>
+            </div>
+
+        {% endif %}
+
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'js/professor/subject_view.js' %}"></script>
+{% endblock %}

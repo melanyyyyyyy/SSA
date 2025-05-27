@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head_scripts %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/professor/student_subject_detail.css' %}"> 
+{% endblock %}
+
+{% block content %}
+    <div class="page-container">
+        <div class="page-header">
+            <div class="return-btn-container">
+                <button id="return-btn" class="btn" onclick="window.location.href='{% url 'subject_view' subject.id %}'"></button>
+            </div>
+            <div class="header-text">
+                <h2 class="title">Registros de {{ student.user.get_full_name }} en {{ subject.name }}</h2>
+                <hr class="custom-hr">
+            </div>
+        </div>
+
+        <h3 class="table-title">Registros de Evaluaciones</h3>
+        <div class="table-container">
+            <form id="edit-grade-form" action="{% url 'student_subject_detail' subject.id student.id %}?edit=grade" method="post">
+                {% csrf_token %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Nombre de la evaluación</th>
+                            <th>Nota</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in grade_records %}
+                            <tr>
+                                <td>{{ record.date }}</td>
+                                <td>{{ record.name }}</td>
+                                <td>
+                                    <input type="number" name="grade_{{ record.id }}" value="{{ record.grade }}" disabled class="transparent-input">
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3">No hay registros de evaluaciones.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% if grade_records %}
+                    <div class="form-actions button-group">
+                        <button type="button" id="edit-grade-btn" class="btn btn-icon">
+                            Editar
+                            <img src="{% static 'images/icons/edit.svg' %}" class="icon">
+                        </button>
+                        <button type="submit" id="save-grade-btn" class="btn btn-icon" style="display:none;">
+                            Guardar cambios
+                            <img src="{% static 'images/icons/save.svg' %}" class="icon">
+                        </button>
+                        <button type="button" id="cancel-grade-btn" class="btn btn-icon" style="display:none;">
+                            Cancelar
+                            <img src="{% static 'images/icons/cancel.svg' %}" class="icon">
+                        </button>
+                    </div>
+                {% endif %}
+            </form>
+        </div>
+
+        <h3 class="table-title">Registros de Asistencia</h3>
+        <div class="table-container">
+            <form id="edit-attendance-form" action="{% url 'student_subject_detail' subject.id student.id %}?edit=attendance" method="post">
+                {% csrf_token %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Asistencia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in attendance_records %}
+                            <tr>
+                                <td>{{ record.date }}</td>
+                                <td>
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" name="attendance_{{ record.id }}" {% if record.attended %}checked{% endif %} disabled>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="2">No hay registros de asistencia.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% if attendance_records %}
+                    <div class="form-actions button-group">
+                        <button type="button" id="edit-attendance-btn" class="btn btn-icon">
+                            Editar
+                            <img src="{% static 'images/icons/edit.svg' %}" class="icon">
+                        </button>
+                        <button type="submit" id="save-attendance-btn" class="btn btn-icon" style="display:none;">
+                            Guardar cambios
+                            <img src="{% static 'images/icons/save.svg' %}" class="icon">
+                        </button>
+                        <button type="button" id="cancel-attendance-btn" class="btn btn-icon" style="display:none;">
+                            Cancelar
+                            <img src="{% static 'images/icons/cancel.svg' %}" class="icon">
+                        </button>
+                    </div>
+                {% endif %}
+            </form>
+        </div>
+        <div id="messages"></div>
+    </div>
+
+    <section class="modal" id="cancel-attendance-modal">
+        <div class="modal-container">
+            <h2 class="modal-title">¿Estás seguro de que deseas cancelar? Se descartarán los cambios realizados.</h2>
+            <div class="modal-options">
+                <button class="btn modal-accept green-hover">Aceptar</button>
+                <button class="btn modal-cancel red-hover">Cancelar</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="modal" id="cancel-grade-modal">
+        <div class="modal-container">
+            <h2 class="modal-title">¿Estás seguro de que deseas cancelar? Se descartarán los cambios realizados.</h2>
+            <div class="modal-options">
+                <button class="btn modal-accept green-hover">Aceptar</button>
+                <button class="btn modal-cancel red-hover">Cancelar</button>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'js/professor/student_subject_detail.js' %}"></script>
+{% endblock %}

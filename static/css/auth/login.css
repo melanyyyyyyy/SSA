@@ -1,0 +1,86 @@
+main {
+    position: relative;
+}
+
+h1 {
+    color: var(--university-blue-color);
+    font-family: 'Museo Sans', sans-serif;
+    font-weight: 900;
+    text-align: center;
+}
+
+.svg-container {
+    width: 300px;
+    height: 200px;
+    position: absolute;
+    justify-self: anchor-center;
+    align-self: anchor-center;
+}
+
+.svg-container img {
+    width: 100%;
+    height: 100%;
+}
+
+#loginForm {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    position-area: center;
+    width: 70%;
+}
+
+#loginForm input{
+    color: var(--university-blue-color);
+    width: 100%;
+    height: 5vh;
+    border-style: none;
+    border-bottom: 2px solid var(--university-blue-color);
+    outline: none;
+}
+
+#loginForm input::placeholder{  
+    color: var(--university-blue-color);
+    font-family: 'Museo Sans', sans-serif;
+    font-weight: 300;
+    padding: 2px;
+}
+
+#password-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+#password-container button {
+    height: 100%;
+    position: absolute;
+    right: 0;
+    background-color: transparent;
+    border-style: none;
+    box-shadow: none;
+    padding: 5px 0;
+}
+
+#error-message {
+    position: absolute;
+    font-weight: 100;
+    font-size: 0.8em;
+    bottom: -25px;
+}
+
+input:-internal-autofill-selected {
+    appearance: none !important; 
+    background-image: none !important;
+    background-color: #e9e9e9 !important;
+    color: inherit !important;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #e9e9e9 inset !important;
+    -webkit-text-fill-color: #333 !important;
+}

@@ -1,0 +1,36 @@
+.no-border {
+    border-right: none !important;
+}
+
+.date-picker {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.date-picker label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.button-group {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 20px;
+}
+
+#submit-button {
+    background-color: var(--university-green-color);
+}
+
+#cancel-button {
+    background-color: var(--red-color);
+}
+
+#session_date_label {
+    font-weight: 900;
+    color: var(--university-green-color);
+    font-size: 1.3em;
+}

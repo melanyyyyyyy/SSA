@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head_scripts %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/professor/comment_add.css' %}">
+{% endblock %}
+
+{% block content %}
+{% if edit_comment %}
+    <h2 class="title">Editar comentario para: {{ student_name }}</h2>
+{% else %}
+    <h2 class="title">Agregar comentario para: {{ student_name }}</h2>
+{% endif %}
+<hr class="custom-hr">
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group-container">
+
+        {% if not subject %}
+
+        <div class="form-group">
+            <label for="subject" class="tittle-medium">Asignatura:</label>
+            <select name="subject" id="subject" class="native-select">
+                <option value="" disabled {% if not subject_selected %}selected{% endif %}>Seleccione una asignatura</option>
+                {% for subject in subjects %}
+                    <option value="{{ subject.id }}" {% if subject.id == subject_selected %}selected{% endif %}>
+                        {{ subject.name }} - Año {{ subject.year }}
+                    </option>
+                {% empty %}
+                    <option disabled>No hay asignaturas disponibles</option>
+                {% endfor %}
+            </select>
+            <div class="custom-select-menu">
+                <div class="custom-select">
+            
+                    {% if edit_comment %}
+                        <span> {{ subject_name }} - Año {{ subject_year }} </span>
+                    {% else %}
+                    <span> Seleccione una asignatura </span>
+                    {% endif %}     
+
+                    <i class="icon angle-down"></i>
+                </div>
+                <div class="custom-options-list">
+                    {% for subject in subjects %}
+                        <div class="custom-option {% if subject.id == subject_selected %}selected{% endif %}" data-value="{{ subject.id }}">
+                            {{ subject.name }} - Año {{ subject.year }}
+                        </div>
+                    {% empty %}
+                        <div class="custom-option" data-value="" disabled>No hay asignaturas disponibles</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        {% else %}
+            <div class="form-group">
+                <label class="tittle-medium">Asignatura:</label>
+                <span class="subject-add-comment">{{ subject.name }} - Año {{ subject.year }}</span>
+            </div>
+
+        {% endif %}
+
+        <div class="form-group">
+            <label for="comment" class="tittle-medium">Comentario:</label>
+            <textarea name="comment" id="comment" rows="4" placeholder="Escriba aquí su comentario...">{{ comment|default_if_none:"" }}</textarea>
+        </div>
+    </div>
+    <div class="button-group">
+        <button type="submit" class="btn btn-icon" id="submit-btn">Guardar</button>
+        <button type="button" class="btn btn-icon" id="cancel-btn" onclick="openCancelModal()">Cancelar</button>
+    </div>
+    
+</form>
+
+<section class="modal" id="cancel-modal">
+    <div class="modal-container">
+        <h2 class="modal-title">¿Seguro que quieres cancelar? Se perderá tu comentario.</h2>
+        <div class="modal-options">
+            <button class="btn modal-accept green-hover" onclick="window.location.href='{% url 'cancel_comment' student_username %}'">Aceptar</button>
+            <button class="btn modal-cancel blue-hover" onclick="closeCancelModal()">Cancelar</button>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'js/professor/comment_add.js' %}"></script>
+{% endblock %}

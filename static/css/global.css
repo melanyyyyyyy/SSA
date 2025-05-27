@@ -1,0 +1,543 @@
+/* ========== Estilos de Sombras ========== */
+.shadow {
+    box-shadow: 0px 5px 10px 0px #00000099;
+}
+
+/* ========== Componentes de Botón ========== */
+.btn {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    animation: fadeOpen 0.3s ease-in-out;
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 15%;
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-icon {
+    width: 170px;
+    color: white;
+    font-weight: 900;
+    font-size: 0.9em;
+    text-align: left;
+    border-radius: 10px;
+    border-style: solid;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-color: transparent;
+    gap: 5px;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
+/* ========== Componentes de Texto ========== */
+.title {
+    font-weight: 900;
+    color: var(--university-blue-color);
+}
+
+.element-not-found {
+    margin: 0;
+    color: var(--text-body-color);
+    font-weight: 500;
+}
+
+.title-black {
+    color: black;
+    font-weight: 900;
+    font-size: 1.2em;
+}
+
+/* ========== Componentes Visuales ========== */
+.custom-hr {
+    border: 3px solid var(--university-blue-color);
+    margin: 20px auto; 
+    border-radius: 10px;
+}
+
+.icon {
+    height: 30px;
+}
+
+/* ========== Botón de Regreso ========== */
+#return-btn {
+    background-color: var(--university-green-color);
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    border-radius: 100%;
+    border-style: none;
+    background-image: url(../images/icons/arrow.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 65%;
+}
+
+#return-btn img {
+    width: 60%;
+    height: auto;
+}
+
+.return-btn-container {
+    width: 60px;
+    align-content: center;
+}
+
+/* ========== Módulos Modales ========== */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #111111bd;
+    display: flex;
+    z-index: 9999999999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .6s .8s;
+    --transform: translateY(-100vh);
+    --transition: transform .6s;
+}
+
+.modal--show {
+    opacity: 1;
+    pointer-events: unset;
+    transition: opacity .6s;
+    --transform: translateY(0);
+    --transition: transform .6s .6s;
+}
+
+.modal-container {
+    margin: auto;
+    width: 80%;
+    max-width: 600px;
+    max-height: 90%;
+    background-color: white;
+    border-radius: 6px;
+    padding: 3em 2.5em;
+    display: grid;
+    gap: 1em;
+    place-items: center;
+    grid-auto-columns: 100%;
+    transform: var(--transform);
+    transition: var(--transition);
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    color: var(--university-blue-color);
+    font-weight: 900;
+    text-align: center;
+}
+
+.modal-options {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.modal-options button {
+    width: 170px;
+    padding: 10px;
+    border-radius: 5px;
+    border-style: unset;
+    font-weight: 500;
+    color: white;
+    font-size: 1.1rem;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.modal-accept {
+    background-color: var(--university-green-color);
+}
+
+.modal-cancel {
+    background-color: var(--red-color);
+}
+
+/* ========== Sistema de Mensajes ========== */
+#messages {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    margin: 20px;
+    z-index: 9999999;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; 
+}
+
+.alert {
+    box-sizing: border-box;
+    padding: 25px 20px;
+    border-radius: 10px;
+    font-weight: bold;
+    width: 100%;
+    text-align: initial;
+    opacity: 1;
+    margin: 0; 
+    animation: fadeIn 0.5s ease-in forwards;
+    transition: opacity 0.8s, transform 0.8s, max-height 0.8s, margin 0.8s;
+    max-height: 200px; 
+    overflow: hidden;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* ========== Animaciones ========== */
+.fadeOpen {
+    animation: fadeOpen 0.3s ease-in-out;
+}
+
+.fade-out {
+    animation: fadeOut 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOpen {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+/* ========== Componentes Tabulares ========== */
+.table {
+    width: 100%;
+    color: var(--university-blue-color);
+    border-radius: 17px;
+    table-layout: fixed;
+    text-align: center;
+    animation: fadeOpen 0.3s ease-in-out;
+    border: 5px solid #F5F5F5;
+    border-spacing: 0;
+}
+
+.table th {
+    background-color: #F5F5F5;
+    font-weight: 900;
+    font-size: 1.3em;
+    padding: 20px 0;
+}
+
+.table td {
+    box-sizing: border-box;
+    background-color: white;
+    font-weight: 300;
+    font-size: 1.1em;
+    padding: 20px;
+    border-bottom: 4px solid #F5F5F5;
+    height: 90px;
+}
+
+tbody tr:last-child td {
+    border-bottom: none; 
+}
+
+tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 12px;
+}
+
+tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 12px;
+}
+
+.table tbody tr:hover td {
+    background-color: #d9d7d7 !important;
+    cursor: pointer;
+}
+
+/* ========== Efectos Hover ========== */
+.blue-hover:hover {
+    box-shadow: 0px 0px 8px rgba(59, 49, 125, 0.5);
+}
+
+.green-hover:hover {
+    box-shadow: 0px 0px 8px rgba(49, 125, 52, 0.5);
+}
+
+.red-hover:hover {
+    box-shadow: 0px 0px 8px rgba(125, 49, 49, 0.5);
+}
+
+/* ========== Sistema de Comentarios ========== */
+.comment {
+    background-color: #f9f9f9;
+    padding: 30px;
+    border-radius: 15px;
+    color: var(--university-blue-color);
+    border: 1px solid #1c2b5d81;
+    transition: all 0.3s ease-in-out;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    gap: 1ch;
+    flex-wrap: wrap;
+    margin-bottom: 7px;
+}
+
+.comment-header :first-child {
+    font-weight: 900;
+}
+
+.comment-header :is(h1, h2, h3, h4, h5, h6) {
+    margin-block: 0;
+}
+
+.comment-header h3 {
+    font-weight: 900;
+    font-size: 1.2rem;
+}
+
+.comment-header h4 {
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.comment-header span {
+    font-weight: 900;
+    color: var(--university-green-color);
+    margin-right: auto;
+}
+
+.comments-container {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 22px;
+    margin-top: 20px 0;
+}
+
+.comment p {
+    text-align: justify;
+    margin-block-end: 0;
+}
+
+/* ========== Componentes de Interfaz ========== */
+.page-header {
+    display: flex;
+    gap: 20px;
+}
+
+.header-text {
+    width: 100%;
+}
+
+.grid-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.action-btn {
+    background: var(--university-green-color);
+    border: none;
+    padding: 8px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+
+.action-btn:hover {
+    background: rgb(85, 141, 47);
+    color: white;
+}
+
+/* ========== Entradas de Formulario ========== */
+input[type="date"] {  
+    border: 2px solid var(--university-blue-color);
+    padding: 10px 12px;
+    border-radius: 10px;
+    color: white;
+    background-color: var(--university-blue-color);
+    height: 50px;
+    width: 200px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+input[type="date"]:hover {  
+    cursor: pointer;
+    box-shadow: 0 10px 8px rgba(0, 0, 0, 0.08);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    width: 25px;
+    height: 25px;
+    padding: 0;
+}
+
+.transparent-input {
+    border: none;
+    font-size: 1em;
+    padding: 5px;
+    outline: none;
+    width: 110px;
+    transform: translateX(15px);
+    border-radius: 5px;
+    opacity: 1 !important;
+}
+
+input.transparent-input:focus {
+    border: 2px solid var(--university-green-color);
+    box-shadow: 0px 0px 8px rgba(59, 49, 125, 0.5);
+    background-color: #fff;
+    outline: none;
+}
+
+input.transparent-input[type="number"]:disabled {
+    opacity: 0.8;
+}
+
+/* ========== Componentes de Selección ========== */
+.checkbox-container {
+    display: flex;
+    position: relative;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.checkmark {
+    position: relative;
+    height: 20px;
+    width: 20px;
+    background-color: #eee;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    display: block;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+    background-color: var(--university-green-color);
+    border-color: var(--university-green-color);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-container input:not(:checked) + .checkmark {
+    background-image: url('../images/icons/cancel.svg');
+    background-color: var(--red-color) !important;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 18px;
+    border-color: var(--red-color);
+}
+
+.checkbox-container input[type="checkbox"]:disabled + .checkmark,
+.checkbox-container input[type="checkbox"]:disabled {
+    cursor: default !important;
+    opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+    .table {
+        padding: 0px;
+    }
+
+    .table th {
+        font-size: 0.9em;
+        padding: 5px;
+        overflow-wrap: break-word;
+        overflow-wrap: normal;
+        hyphens: auto;
+        height: 50px;
+    }
+
+    .table td {
+        font-size: 0.8em;
+        height: 120px;
+        padding: 5px;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+    
+    .comment {
+        padding: 20px;
+    }
+
+    .grid-action {  
+        flex-direction: column;
+    }
+
+    .title {
+        font-size: 1.2em;
+    }
+
+    .custom-hr {
+        margin: 10px auto;
+    }
+    
+    .page-header {
+        margin-bottom: 15px;
+    }
+}

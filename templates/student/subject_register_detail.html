@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head_scripts %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/student/subject_register_detail.css' %}"> 
+{% endblock %}
+
+{% block content %}
+    <div class="page-container">
+        <div class="page-header">
+            <div class="return-btn-container">
+                <button id="return-btn" class="btn" onclick="window.location.href='{% url 'student_dashboard' %}'"></button>
+            </div>
+            <div class="header-text">
+                <h2 class="title">Registros de {{ subject.name }}</h2>
+                <hr class="custom-hr">
+            </div>
+        </div>
+
+        <h3 class="table-title">Registros de Evaluaciones</h3>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Nombre de la evaluación</th>
+                        <th>Nota</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in grade_records %}
+                        <tr>
+                            <td>{{ record.date }}</td>
+                            <td>{{ record.name }}</td>
+                            <td>{{ record.grade|default:"N/A" }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="3">No hay registros de evaluaciones.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="table-title">Registros de Asistencia</h3>
+        <div class="table-container">
+            <table class="table last-table">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Asistencia</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in attendance_records %}
+                        <tr>
+                            <td>{{ record.date }}</td>
+                            <td>
+                                {% if record.attended %}
+                                    Asistió
+                                {% else %}
+                                    No asistió
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="2">No hay registros de asistencia.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

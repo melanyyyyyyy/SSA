@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head_scripts %}
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static 'css/auth/login.css' %}">
+
+{% endblock %}
+
+{% block nav %}
+
+<img src="{% static 'images/logos/UHO White.svg' %}" alt="Logo de la Universidad" class="logo">
+
+{% endblock %}
+
+{% block content %}
+
+<h1>BIENVENIDOS</h1>
+
+<div class="svg-container">
+    <form id="loginForm">
+        {% csrf_token %}
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+        <input type="text" name="username" placeholder="Usuario" required>
+        <div id = "password-container">
+            <input type="password" name="password" placeholder="Contraseña" required>
+
+            <button id="show-password" type="button"
+                    data-eye-open="{% static 'images/icons/eye-open.svg' %}" 
+                    data-eye-closed="{% static 'images/icons/eye-closed.svg' %}"
+                    class="btn">
+                <img src="{% static 'images/icons/eye-closed.svg' %}"> 
+            </button>
+            
+            <div id="error-message" style="color: red;"></div>
+        </div>
+    </form>
+    <img src="{% static 'images/container.svg' %}" alt="SVG Background"> 
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script src="{% static 'js/auth/login.js' %}"></script>
+
+{% endblock %}

@@ -1,0 +1,14 @@
+.table-title {
+    font-size: 1.3em;
+    color: var(--university-green-color);
+    font-weight: 900;
+    margin: 30px 0 12px 10px;
+}
+
+.table tbody tr:hover td {
+    cursor: default;
+}
+
+.last-table {
+    margin-bottom: 30px;
+}
