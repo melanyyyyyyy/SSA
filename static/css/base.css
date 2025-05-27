@@ -100,6 +100,11 @@ input {
 .logo {
     height: 80%;
     margin-right: auto;
+    align-content: center;
+}
+
+.logo img {
+    height: 100%;
 }
 
 .user-icon-container {

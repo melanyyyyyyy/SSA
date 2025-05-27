@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const date = btn.getAttribute('data-date');
             const subject_id = btn.getAttribute('data-subject');
             showModal(() => {
-                fetch('/professor/dashboard/history/delete_attendance/', {
+                fetch('/professor/history/delete_attendance/', {
                     method: 'POST',
                     headers: {
                         'X-CSRFToken': document.querySelector('input[name=csrfmiddlewaretoken]').value,
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const name = btn.getAttribute('data-name');
             const subject_id = btn.getAttribute('data-subject');
             showModal(() => {
-                fetch('/professor/dashboard/history/delete_grade/', {
+                fetch('/professor/history/delete_grade/', {
                     method: 'POST',
                     headers: {
                         'X-CSRFToken': document.querySelector('input[name=csrfmiddlewaretoken]').value,

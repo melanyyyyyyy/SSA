@@ -17,9 +17,11 @@
 <body>
     <nav class="shadow nav-bar">
         {% block nav %}
-        <img src="{% static 'images/logos/UHO Short White.svg' %}"
-             class="logo"
-             alt="Logo UHo"/>
+        <a class="logo" href="{% if user.is_professor %}{% url 'professor_dashboard' %}{% elif user.is_student %}{% url 'student_dashboard' %}{% endif %}">
+            <img src="{% static 'images/logos/UHO Short White.svg' %}"
+                    alt="Logo UHo"/>
+        </a>
+
         
         {% if user.is_authenticated %}
 

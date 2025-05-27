@@ -11,13 +11,11 @@ from django.contrib.messages import get_messages
 from django.db import models
 from django.db.models import Q, Avg, Count
 
-from .models import Student, Subject, User, Comment, UserRole, GradeRecord, AttendanceRecord
+from .models import Professor, Student, Subject, User, Comment, UserRole, GradeRecord, AttendanceRecord
 from .decorators import professor_required, student_required
 
-
 def home(request:HttpRequest):
-    return render(request, 'home.html')
-
+    return redirect(login_view)
 
 # Vista para el login
 def login_view(request : HttpRequest):
@@ -25,13 +23,13 @@ def login_view(request : HttpRequest):
     if user.is_authenticated:
         match user.get_role():
             case UserRole.PROFESSOR:
-                return redirect('/professor/dashboard/')
+                return redirect(professor_dashboard)
             case UserRole.STUDENT:
-                return redirect('/student/dashboard/')
+                return redirect(student_dashboard)
             case UserRole.ADMIN:
                 return redirect('/admin/')
     return render(request, 'auth/login.html')
-
+ 
 
 @require_POST
 def login_check(request: HttpRequest):
@@ -57,8 +55,8 @@ def login_check(request: HttpRequest):
             return JsonResponse({
                 'success': True,
                 'redirect_url': (
-                    '/professor/dashboard/' if is_professor else
-                    '/student/dashboard/' if is_student else
+                    '/dashboard/professor/' if is_professor else
+                    '/dashboard/student/' if is_student else
                     '/admin/'
                 )
             })
@@ -82,11 +80,11 @@ def logout_view(request: HttpRequest):
 @login_required
 @professor_required
 def professor_dashboard(request: HttpRequest):
-    professor = request.user.professor
+    professor : Professor = request.user.professor
     
     subjects = (
             Subject.objects.filter(professor=professor, completed=False)
-            .order_by("year") 
+            .order_by("year", "name") 
             .distinct() 
         )
     
@@ -193,7 +191,7 @@ def register_attendance(request: HttpRequest, subject_id: int):
         messages.success(request, "Asistencia registrada correctamente.")
         return JsonResponse({
             "success": True,
-            "redirect_url": f"/professor/dashboard/{subject_id}"
+            "redirect_url": f"/professor/subject/{subject_id}"
         })
         
     return render(request, 'professor/register_attendance.html', context)
@@ -263,7 +261,7 @@ def register_grade(request: HttpRequest, subject_id: int):
         messages.success(request, "Evaluación registrada correctamente.")
         return JsonResponse({
             "success": True,
-            "redirect_url": f"/professor/dashboard/{subject_id}"
+            "redirect_url": f"/professor/subject/{subject_id}"
         })
 
     return render(request, 'professor/register_grade.html', context)
@@ -274,6 +272,7 @@ def register_grade(request: HttpRequest, subject_id: int):
 @login_required
 @professor_required
 def comment_add(request: HttpRequest, username: str, subject_id: int):
+    
     student_user = get_object_or_404(User, username=username)
     student = student_user.student
     professor = request.user.professor
@@ -284,7 +283,7 @@ def comment_add(request: HttpRequest, username: str, subject_id: int):
 
         if not comment_text:
             messages.error(request, "El comentario no puede estar vacío")
-            return redirect('comment_add', username=username, subject_id=subject_id)
+            return redirect(comment_add, username=username, subject_id=subject_id)
 
         try:
             Comment.objects.create(
@@ -294,10 +293,10 @@ def comment_add(request: HttpRequest, username: str, subject_id: int):
                 comment=comment_text
             )
             messages.success(request, "Comentario guardado exitosamente")
-            return redirect('subject_view', subject_id=subject_id)
+            return redirect(subject_view, subject_id=subject_id)
         except Exception as e:
             messages.error(request, f"Error al guardar el comentario: {str(e)}")
-            return redirect('comment_add', username=username, subject_id=subject_id)
+            return redirect(comment_add, username=username, subject_id=subject_id)
 
     context = {
         'subject': subject,
@@ -359,7 +358,7 @@ def edit_comment(request: HttpRequest, comment_id: int ):
         comment.subject = get_object_or_404(Subject, id=subject_id)
         comment.save()
         messages.success(request, "Cambios guardados exitosamente")
-        return redirect('professor_dashboard')
+        return redirect(professor_dashboard)
 
     context = {
         'subjects': subjects,
@@ -376,7 +375,7 @@ def edit_comment(request: HttpRequest, comment_id: int ):
 
 def cancel_comment(request, username):
     messages.error(request, "El usuario canceló la acción.")
-    return redirect('professor_dashboard')
+    return redirect(professor_dashboard)
 
 
 
@@ -498,8 +497,6 @@ def history_detail_attendance(request, subject_id, date):
         'records': records,
     }
     return render(request, 'professor/history/history_detail_attendance.html', context)
-
-
 
 # Vista para cargar los detalles del registro de de evaluación
 @login_required
